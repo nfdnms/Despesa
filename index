@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Contas</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000080">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon-512.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    label {
+      display: flex;
+      justify-content: space-between;
+      width: 250px;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+    }
+    .caixa {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      width: 250px;
+      text-align: center;
+      font-weight: bold;
+    }
+    #resultadoParcial {
+      background-color: #98fb98; /* verde claro */
+      color: #000080;           /* azul escuro */
+    }
+    #resultado {
+      background-color: #ffff00; /* amarelo */
+      color: #000000;            /* preto */
+    }
+  </style>
+</head>
+<body>
+  <h2>Calculadora de Contas</h2>
+
+  <label>Água: <input type="number" id="agua" step="0.01"></label>
+  <label>Luz: <input type="number" id="luz" step="0.01"></label>
+  <label>TV: <input type="number" id="tv" step="0.01"></label>
+  <label>Internet: <input type="number" id="internet" step="0.01"></label>
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div id="resultadoParcial" class="caixa"></div>
+  <div id="resultado" class="caixa"></div>
+
+  <script>
+    function calcular() {
+      const agua = parseFloat(document.getElementById('agua').value) || 0;
+      const luz = parseFloat(document.getElementById('luz').value) || 0;
+      const tv = parseFloat(document.getElementById('tv').value) || 0;
+      const internet = parseFloat(document.getElementById('internet').value) || 0;
+
+      const somaAguaLuz = agua + luz;
+      const divididoPorTres = somaAguaLuz / 3;
+      const resultadoFinal = divididoPorTres - tv - internet;
+
+      document.getElementById('resultadoParcial').innerText =
+        "Água e Luz ÷ 3: R$ " + divididoPorTres.toFixed(2);
+
+      document.getElementById('resultado').innerText =
+        "Água e Luz - TV e Internet: R$ " + resultadoFinal.toFixed(2);
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log("Service Worker registrado!"));
+    }
+  </script>
+</body>
+</html>
