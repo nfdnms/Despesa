@@ -3,84 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Contas</title>
+  <title>Calculadora</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#000080">
-  <link rel="icon" href="icon-192.png" type="image/png">
-  <link rel="apple-touch-icon" href="icon-512.png">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      height: 100vh;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
-    label {
-      display: flex;
-      justify-content: space-between;
-      width: 250px;
-      margin-top: 10px;
+
+    .card {
+      background: #16213e;
+      padding: 30px 25px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-    }
-    .caixa {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      width: 250px;
+
+    h1 {
       text-align: center;
+      font-size: 24px;
+      margin-bottom: 25px;
+      color: #e94560;
+    }
+
+    .campo {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 5px;
       font-weight: bold;
     }
-    #resultadoParcial {
-      background-color: #98fb98; /* verde claro */
-      color: #000080;           /* azul escuro */
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 18px;
+      text-align: center;
+      background: #0f3460;
+      color: #fff;
+      outline: none;
     }
-    #resultado {
-      background-color: #ffff00; /* amarelo */
-      color: #000000;            /* preto */
+
+    input::placeholder {
+      color: #888;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #e94560;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:active {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+
+    .resultados {
+      margin-top: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .resultado {
+      background: #0f3460;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .resultado span {
+      display: block;
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+
+    .resultado strong {
+      font-size: 22px;
+      color: #00ff88;
     }
   </style>
 </head>
 <body>
-  <h2>Calculadora de Contas</h2>
 
-  <label>Água: <input type="number" id="agua" step="0.01"></label>
-  <label>Luz: <input type="number" id="luz" step="0.01"></label>
-  <label>TV: <input type="number" id="tv" step="0.01"></label>
-  <label>Internet: <input type="number" id="internet" step="0.01"></label>
+  <div class="card">
+    <h1>💰 Calculadora</h1>
 
-  <button onclick="calcular()">Calcular</button>
+    <div class="campo">
+      <label>💧 Água</label>
+      <input type="number" id="agua" placeholder="Digite o valor" step="0.01">
+    </div>
 
-  <div id="resultadoParcial" class="caixa"></div>
-  <div id="resultado" class="caixa"></div>
+    <div class="campo">
+      <label>💡 Luz</label>
+      <input type="number" id="luz" placeholder="Digite o valor" step="0.01">
+    </div>
+
+    <div class="campo">
+      <label>📺 UniTv</label>
+      <input type="number" id="unitv" placeholder="Digite o valor" step="0.01">
+    </div>
+
+    <div class="campo">
+      <label>🌐 Internet</label>
+      <input type="number" id="internet" value="44.95" step="0.01" readonly>
+    </div>
+
+    <button onclick="calcular()">▶ EXECUTAR</button>
+
+    <div class="resultados" id="resultados" style="display:none;">
+      <div class="resultado">
+        <span>LEONARDO — Água + Luz ÷ 3</span>
+        <strong id="res1">R$ 0,00</strong>
+      </div>
+      <div class="resultado">
+        <span>LUIZ FERNANDO - Água + Luz - UniTv + Internet</span>
+        <strong id="res2">R$ 0,00</strong>
+      </div>
+    </div>
+  </div>
 
   <script>
     function calcular() {
-      const agua = parseFloat(document.getElementById('agua').value) || 0;
-      const luz = parseFloat(document.getElementById('luz').value) || 0;
-      const tv = parseFloat(document.getElementById('tv').value) || 0;
-      const internet = parseFloat(document.getElementById('internet').value) || 0;
+      const agua    = Number(document.getElementById('agua').value)    || 0;
+      const luz     = Number(document.getElementById('luz').value)     || 0;
+      const unitv   = Number(document.getElementById('unitv').value)   || 0;
+      const internet = Number(document.getElementById('internet').value) || 0;
 
-      const somaAguaLuz = agua + luz;
-      const divididoPorTres = somaAguaLuz / 3;
-      const resultadoFinal = divididoPorTres - tv - internet;
+      const soma1 = (agua + luz) / 3;
+      const soma2 = soma1 - (unitv + internet);
 
-      document.getElementById('resultadoParcial').innerText =
-        "Água e Luz ÷ 3: R$ " + divididoPorTres.toFixed(2);
+      document.getElementById('res1').textContent =
+        'R$ ' + soma1.toFixed(2).replace('.', ',');
+      document.getElementById('res2').textContent =
+        'R$ ' + soma2.toFixed(2).replace('.', ',');
 
-      document.getElementById('resultado').innerText =
-        "Água e Luz - TV e Internet: R$ " + resultadoFinal.toFixed(2);
+      document.getElementById('resultados').style.display = 'flex';
     }
 
+    // Registrar o Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log("Service Worker registrado!"));
+      navigator.serviceWorker.register('sw.js');
     }
   </script>
+
 </body>
 </html>
